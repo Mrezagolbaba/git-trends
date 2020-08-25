@@ -1,0 +1,29 @@
+import * as React from 'react';
+import {useSearchLanguageQuery} from '../../generated/graphql';
+// import './styles.js';
+import SelectList from "./SelectList";
+
+interface Props {
+    // data: MostTopTechQuery;
+}
+
+const FilterContent: React.FC<Props> = () => {
+    const { data, error, loading } = useSearchLanguageQuery({
+        variables: { queryString: String('language: ') },
+    });
+    console.log(data)
+        if (loading) {
+            return <div className="flex ">Loading...</div>;
+        }
+
+        if (error || !data) {
+            return <div>ERROR</div>;
+        }
+
+
+        return <SelectList language={data}/>
+
+
+};
+
+export default FilterContent
