@@ -4,18 +4,14 @@ import React, {useEffect, useState} from 'react'
 import {useMostTopTechQuery} from '../../generated/graphql';
 import Card from './Card';
 
-interface Props {
-    // repo:Array<any>,
-    // data:MostTopTechQuery;
+interface OwnProps {
+    value: String;
 }
 
-const CardContent: React.FC<Props> = ()=>{
-   const value = localStorage.getItem('selected')
+const CardContent: React.FC<OwnProps> = ({value}: OwnProps)=>{
+   // const value = localStorage.getItem('selected')
     const { data, error, loading } = useMostTopTechQuery({variables: { queryString: `language:${value}`}, });
-    // @ts-ignore
-   const {val,setval}= useState('')
 
-    window.storage.onChanged.addListener(callback)
 
     if (loading) {
         return <div>Loading...</div>;
