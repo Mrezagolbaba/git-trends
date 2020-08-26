@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Card: React.FC<Props> = ({data, ...rest})=>{
-    if (!data.search) {
+    if (!data.search ) {
         return <div>No trends available</div>;
     }
 
