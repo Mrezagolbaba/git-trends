@@ -3,9 +3,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 I used typeScript and react for UI and grapgql for the query . this project is a sample for using Github API graphql v4 for beginners 
 
 
-you can check the schema of `GitHub GraphQL API` in this link
+this is playground for `GitHub GraphQL API` 
 
 https://developer.github.com/v4/explorer/
+
+also for more infomation about `GitHub GraphQL API` please see this link
+
+https://docs.github.com/en/graphql
 
 ## Available Scripts
 
