@@ -5,13 +5,18 @@ import ReactSelect,{
     Props as SelectProps,
 } from 'react-select'
 import makeAnimated from 'react-select/animated';
-import {SearchLanguageQuery, useSearchLanguageQuery} from '../../generated/graphql';
+import {SearchLanguageQuery, useMostTopTechQuery, useSearchLanguageQuery} from '../../generated/graphql';
 
-interface Props extends SelectProps<OptionTypeBase>{
-    language:SearchLanguageQuery;
+export interface OwnProps {
+    handleIdChange: (newSelect: String) => void;
+}
+
+interface Props extends OwnProps {
+    language: SearchLanguageQuery;
 }
 const animatedComponents = makeAnimated();
-const SelectList: React.FC<Props> = ({language, ...rest})=>{
+const SelectList: React.FC<Props> = ({language})=>{
+
     const [select, setSelect] = useState<{ value:string }>()
 
     const { data, error, loading } = useSearchLanguageQuery({
@@ -23,9 +28,8 @@ const SelectList: React.FC<Props> = ({language, ...rest})=>{
         console.log(data)
         data.map((i:any) => {
             localStorage.setItem('selected',i.value)
+            handleIdChange(i.value)
         })
-        // @ts-ignore
-        // localStorage.setItem('selected',select)
     };
     // @ts-ignore
     const languageTrend:object[] = []
