@@ -11,10 +11,17 @@ const Card: React.FC<Props> = ({data, ...rest})=>{
     if (!data.search ) {
         return <div>No trends available</div>;
     }
-
+   const info = data.search.edges?.map(i=>{
+       return i?.node
+   })
+console.log(info)
     return(
         <div>
-            <p>{data.search.repositoryCount}</p>
+
+
+
+            {/* {} */}
+            {/*})}*/}
         </div>
     )
 }
