@@ -6007,6 +6007,8 @@ export type MergeBranchInput = {
   head: Scalars['String'];
   /** Message to use for the merge commit. If omitted, a default will be used. */
   commitMessage?: Maybe<Scalars['String']>;
+  /** The email address to associate with this commit. */
+  authorEmail?: Maybe<Scalars['String']>;
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -17777,26 +17779,6 @@ export type ViewerHovercardContext = HovercardContext & {
 };
 
 
-export type SearchLanguageQueryVariables = Exact<{
-  queryString: Scalars['String'];
-}>;
-
-
-export type SearchLanguageQuery = (
-  { __typename?: 'Query' }
-  & { search: (
-    { __typename?: 'SearchResultItemConnection' }
-    & Pick<SearchResultItemConnection, 'repositoryCount'>
-    & { edges?: Maybe<Array<Maybe<(
-      { __typename?: 'SearchResultItemEdge' }
-      & { node?: Maybe<{ __typename?: 'App' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | (
-        { __typename?: 'Repository' }
-        & Pick<Repository, 'nameWithOwner'>
-      ) | { __typename?: 'User' }> }
-    )>>> }
-  ) }
-);
-
 export type MostTopTechQueryVariables = Exact<{
   queryString: Scalars['String'];
 }>;
@@ -17842,47 +17824,27 @@ export type MostTopTechQuery = (
   ) }
 );
 
+export type SearchLanguageQueryVariables = Exact<{
+  queryString: Scalars['String'];
+}>;
 
-export const SearchLanguageDocument = gql`
-    query SearchLanguage($queryString: String!) {
-  search(query: $queryString, type: REPOSITORY, first: 100) {
-    repositoryCount
-    edges {
-      node {
-        ... on Repository {
-          nameWithOwner
-        }
-      }
-    }
-  }
-}
-    `;
 
-/**
- * __useSearchLanguageQuery__
- *
- * To run a query within a React component, call `useSearchLanguageQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchLanguageQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchLanguageQuery({
- *   variables: {
- *      queryString: // value for 'queryString'
- *   },
- * });
- */
-export function useSearchLanguageQuery(baseOptions?: Apollo.QueryHookOptions<SearchLanguageQuery, SearchLanguageQueryVariables>) {
-        return Apollo.useQuery<SearchLanguageQuery, SearchLanguageQueryVariables>(SearchLanguageDocument, baseOptions);
-      }
-export function useSearchLanguageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchLanguageQuery, SearchLanguageQueryVariables>) {
-          return Apollo.useLazyQuery<SearchLanguageQuery, SearchLanguageQueryVariables>(SearchLanguageDocument, baseOptions);
-        }
-export type SearchLanguageQueryHookResult = ReturnType<typeof useSearchLanguageQuery>;
-export type SearchLanguageLazyQueryHookResult = ReturnType<typeof useSearchLanguageLazyQuery>;
-export type SearchLanguageQueryResult = Apollo.QueryResult<SearchLanguageQuery, SearchLanguageQueryVariables>;
+export type SearchLanguageQuery = (
+  { __typename?: 'Query' }
+  & { search: (
+    { __typename?: 'SearchResultItemConnection' }
+    & Pick<SearchResultItemConnection, 'repositoryCount'>
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'SearchResultItemEdge' }
+      & { node?: Maybe<{ __typename?: 'App' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | (
+        { __typename?: 'Repository' }
+        & Pick<Repository, 'nameWithOwner'>
+      ) | { __typename?: 'User' }> }
+    )>>> }
+  ) }
+);
+
+
 export const MostTopTechDocument = gql`
     query MostTopTech($queryString: String!) {
   search(query: $queryString, type: REPOSITORY, first: 50) {
@@ -17952,3 +17914,43 @@ export function useMostTopTechLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type MostTopTechQueryHookResult = ReturnType<typeof useMostTopTechQuery>;
 export type MostTopTechLazyQueryHookResult = ReturnType<typeof useMostTopTechLazyQuery>;
 export type MostTopTechQueryResult = Apollo.QueryResult<MostTopTechQuery, MostTopTechQueryVariables>;
+export const SearchLanguageDocument = gql`
+    query SearchLanguage($queryString: String!) {
+  search(query: $queryString, type: REPOSITORY, first: 100) {
+    repositoryCount
+    edges {
+      node {
+        ... on Repository {
+          nameWithOwner
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchLanguageQuery__
+ *
+ * To run a query within a React component, call `useSearchLanguageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchLanguageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchLanguageQuery({
+ *   variables: {
+ *      queryString: // value for 'queryString'
+ *   },
+ * });
+ */
+export function useSearchLanguageQuery(baseOptions?: Apollo.QueryHookOptions<SearchLanguageQuery, SearchLanguageQueryVariables>) {
+        return Apollo.useQuery<SearchLanguageQuery, SearchLanguageQueryVariables>(SearchLanguageDocument, baseOptions);
+      }
+export function useSearchLanguageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchLanguageQuery, SearchLanguageQueryVariables>) {
+          return Apollo.useLazyQuery<SearchLanguageQuery, SearchLanguageQueryVariables>(SearchLanguageDocument, baseOptions);
+        }
+export type SearchLanguageQueryHookResult = ReturnType<typeof useSearchLanguageQuery>;
+export type SearchLanguageLazyQueryHookResult = ReturnType<typeof useSearchLanguageLazyQuery>;
+export type SearchLanguageQueryResult = Apollo.QueryResult<SearchLanguageQuery, SearchLanguageQueryVariables>;
