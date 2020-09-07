@@ -1,11 +1,15 @@
 import * as React from 'react';
-import {useSearchLanguageQuery} from '../../generated/graphql';
+import {SearchLanguageQuery, useSearchLanguageQuery} from '../../generated/graphql';
 // import './styles.js';
-import SelectList from "./SelectList";
+import SelectList, {OwnProps} from "./SelectList";
 
 
-const FilterContent =() => {
-    const { data, error, loading } = useSearchLanguageQuery();
+interface Props {
+    handleSelected: (newSelect: String) => void;
+}
+const FilterContent =(props:Props) => {
+    const { data, error, loading } = useSearchLanguageQuery({variables: { queryString: `language:`},});
+    console.log(data,error)
         if (loading) {
             return <div className="flex ">Loading...</div>;
         }
@@ -14,8 +18,7 @@ const FilterContent =() => {
             return <div>ERROR</div>;
         }
 
-
-        return <SelectList language={data} />
+        return <SelectList language={data} handleSelected={props.handleSelected} />
 
 
 };

@@ -1,55 +1,79 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from "react";
 
-import ReactSelect,{
+import ReactSelect, {
     OptionTypeBase,
     Props as SelectProps,
-} from 'react-select'
-import makeAnimated from 'react-select/animated';
-import {SearchLanguageQuery, useMostTopTechQuery, useSearchLanguageQuery} from '../../generated/graphql';
+    ValueType,
+    ActionMeta,
+} from "react-select";
+
+import makeAnimated from "react-select/animated";
+
+import {
+    SearchLanguageQuery,
+    useMostTopTechQuery,
+    useSearchLanguageQuery,
+} from "../../generated/graphql";
 
 export interface OwnProps {
-    handleIdChange: (newSelect: String) => void;
+    handleSelected: (newSelect: String) => void;
 }
 
 interface Props extends OwnProps {
     language: SearchLanguageQuery;
 }
-const animatedComponents = makeAnimated();
-const SelectList: React.FC<Props> = ({language})=>{
 
-    const [select, setSelect] = useState<{ value:string }>()
+const animatedComponents = makeAnimated();
+
+type IOptionType  = {
+    label: string;
+    value: string;
+}
+const SelectList: React.FC<Props> = ({ language, handleSelected }) => {
+    const [select, setSelect] = useState<{ value: string }>();
 
     const { data, error, loading } = useSearchLanguageQuery({
-        variables: { queryString: String('language: ') },
+        variables: { queryString: String("language: ") },
     });
 
-    const onChange = (e: any) => {
-        const data =  e
-        console.log(data)
-        data.map((i:any) => {
-            localStorage.setItem('selected',i.value)
-            handleIdChange(i.value)
-        })
+    const onChange = (value: ValueType<IOptionType>, _: ActionMeta<IOptionType>)=>{
+       
+            (value as IOptionType[])?.forEach((item) => {
+                let string = item.value;
+                let result = string.substring(string.lastIndexOf("/") + 1);
+                console.log(result);
+                localStorage.setItem("selected", result);
+                handleSelected(result);
+            });
+        
+
     };
-    // @ts-ignore
-    const languageTrend:object[] = []
 
-   language.search.edges?.forEach(i=> Object.keys(i?.node as String).forEach(key=>{
-       // @ts-ignore
-            languageTrend.push({value:i.node.nameWithOwner,label:i.node.nameWithOwner })
+    const languageTrend: object[] = [];
 
-    }))
+    language.search.edges?.forEach((edge) => {
+        if (typeof edge?.node === "object" && edge?.node !== null) {
+            return Object.keys(edge?.node).forEach((key) => {
+                if(edge?.node?.__typename === "Repository"){
+                    languageTrend.push({
+                        value: edge?.node?.nameWithOwner,
+                        label: edge?.node?.nameWithOwner,
+                    });
+                }
+            });
+        }
+    });
 
-
-    return(
+    return (
         <ReactSelect
             options={languageTrend}
             components={animatedComponents}
-            isMulti={true}
+            isMulti
             className="basic-multi-select "
             classNamePrefix="select"
             onChange={onChange}
         />
-    )
-}
-export default SelectList
+    );
+};
+export default SelectList;
+
