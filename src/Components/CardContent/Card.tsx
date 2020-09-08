@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { MostTopTechQuery } from '../../generated/graphql'
+import StyledCard from './styles'
 
 
 
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const Card: React.FC<Props> = ({data, ...rest})=>{
+    const [card, setCard] = useState({})
     if (!data.search ) {
         return <div>No trends available</div>;
     }
@@ -15,17 +17,21 @@ const Card: React.FC<Props> = ({data, ...rest})=>{
    const info = data.search.edges?.map(i=>{
        return i?.node
    })
+//    useEffect(() => {
+//      setCard({...card,info})
+//    }, [info])
 
     return(
         <div>
                 {info?.map((i)=>{
                 if(i?.__typename === "Repository"){
                    return (
-                   <div className="flex justify-center items-center">
-                             <span>{i.forkCount}</span>
-                            <span>{i.homepageUrl!==""?i.homepageUrl:""}</span>
-                            <span>{i.issues.__typename==="IssueConnection"? i.issues.totalCount:''}</span>
-                   </div>
+                   <StyledCard>
+                       <p>Home Page:</p><span>{i.homepageUrl!==""?i.homepageUrl:""}</span>
+
+                            <p>forkCount:</p> <span>{i.forkCount}</span>
+                            <p>total issue:</p><span>{i.issues.__typename==="IssueConnection"? i.issues.totalCount:''}</span>
+                   </StyledCard>
                    
                     )
                     // 
