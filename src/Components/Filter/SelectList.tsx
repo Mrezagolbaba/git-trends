@@ -26,8 +26,7 @@ interface Props extends OwnProps {
 const animatedComponents = makeAnimated();
 
 type IOptionType  = {
-    label: string;
-    value: string;
+    [key: string]: string;
 }
 const SelectList: React.FC<Props> = ({ language, handleSelected }) => {
     const [select, setSelect] = useState<{ value: string }>();
@@ -49,7 +48,7 @@ const SelectList: React.FC<Props> = ({ language, handleSelected }) => {
 
     };
 
-    const languageTrend: object[] = [];
+    const languageTrend: { [key: string]: string }[] = [];
 
     language.search.edges?.forEach((edge) => {
         if (typeof edge?.node === "object" && edge?.node !== null) {
